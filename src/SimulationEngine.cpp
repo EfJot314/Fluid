@@ -26,8 +26,6 @@ SimulationEngine::~SimulationEngine(){};
 
 
 void SimulationEngine::moveAll(int width, int height){
-    //memory allocation
-    vector<float*> accelerations(nOfParticles);
     //assign particles to sectors
     int dx = width / nX;
     int dy = height / nY;
@@ -45,32 +43,41 @@ void SimulationEngine::moveAll(int width, int height){
         sectors[i][j].push_back(particle);
     }
     //get accelerations
-    for(int i=0;i<nOfParticles;i++){
-        accelerations.at(i) = getAcceleration(i);
-    }
-    //update position and velocity of each planet
-    for(int i=0;i<nOfParticles;i++){
-        particles[i]->updateKinematicProperties(accelerations[i], width, height);
-    }   
-    //clear sectors
     for(int i=0;i<nX;i++){
         for(int j=0;j<nY;j++){
-            sectors[i][j].clear();
+            for(Particle* particle : sectors[i][j]){
+                float* acceleration = getAcceleration(particle, sectors[i][j]);
+                particle->updateKinematicProperties(acceleration, width, height);
+                //free memory
+                delete acceleration;
+            }
         }
     }
-    //free memory
-    for(int i=0;i<nOfParticles;i++)
-        delete accelerations[i];
+    //clear sectors
+    for(int i=0;i<nX;i++)
+        for(int j=0;j<nY;j++)
+            sectors[i][j].clear();
 };
 
 
-float* SimulationEngine::getAcceleration(int particleId){
+float* SimulationEngine::getAcceleration(Particle* particle, vector<Particle*> sectorParticles){
     //accelerations
     float ax = 0;
     float ay = g;
     //particle position
-    float xp = particles[particleId]->getPositionX();
-    float yp = particles[particleId]->getPositionY();
+    float xp = particle->getPositionX();
+    float yp = particle->getPositionY();
+    //get acceleration from another particles in this sector
+    for(Particle* p : sectorParticles){
+        if(p == particle)
+            continue;
+        //Force = influence / distance_between_particles 
+        float rSq = (xp - p->getPositionX())*(xp - p->getPositionX()) + (yp - p->getPositionY())*(yp - p->getPositionY());
+        float Fx = (xp - p->getPositionX()) / (rSq) * influence;
+        float Fy = (yp - p->getPositionY()) / (rSq) * influence;
+        ax += Fx / particle->getMass();
+        ay += Fy / particle->getMass();
+    }
     //create structure to return
     float* acceleration = new float[2];
     acceleration[0] = ax;

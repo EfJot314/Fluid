@@ -8,3 +8,5 @@
 #define MaxNoParticles 100000
 //energy loss in collisions
 #define energyLoss 0.1f
+//constant to calculate influence between two particles
+#define influence 1.0f;

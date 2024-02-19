@@ -41,7 +41,7 @@ class SimulationEngine{
         SimulationEngine(int nx, int ny);
         ~SimulationEngine();
         void moveAll(int width, int height);
-        float* getAcceleration(int particleId);
+        float* getAcceleration(Particle* particle, std::vector<Particle*> sectorParticles);
         void addParticle(Particle* particle);
         Particle* getParticle(int i);
 };
