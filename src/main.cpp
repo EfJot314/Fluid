@@ -8,7 +8,7 @@ int main()
 
     //start simulation
     Simulation sim(800, 600);
-    sim.createParticles(50);
+    sim.createParticles(100);
     sim.run();
   
     return 0;

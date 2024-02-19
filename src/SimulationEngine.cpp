@@ -19,7 +19,7 @@ void SimulationEngine::moveAll(int width, int height){
     }
     //update position and velocity of each planet
     for(int i=0;i<nOfParticles;i++){
-        particles[i]->updateKinematicProperties(accelerations[i]);
+        particles[i]->updateKinematicProperties(accelerations[i], width, height);
     }   
     //free memory
     for(int i=0;i<nOfParticles;i++){

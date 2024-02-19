@@ -5,4 +5,6 @@
 //g constant (in real g=9,81 m/s^2)
 #define g 1.5f
 //maximum number of particles in simulation
-#define MaxNoParticles 100
+#define MaxNoParticles 100000
+//energy loss in collisions
+#define energyLoss 0.1f

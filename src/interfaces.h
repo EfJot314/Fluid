@@ -25,7 +25,7 @@ class Particle{
         float getMass();
         float getPositionX();
         float getPositionY();
-        void updateKinematicProperties(float* acceleration);
+        void updateKinematicProperties(float* acceleration, int width, int height);
 };
 
 

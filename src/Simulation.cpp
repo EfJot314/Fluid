@@ -23,7 +23,7 @@ Simulation::~Simulation(){};
 void Simulation::createParticles(int n){
 
     if(n > MaxNoParticles){
-        perror("Too big requested number of particles to create!\n");
+        perror("Too many particles to create!\n");
         exit(1);
     }
 
@@ -31,8 +31,8 @@ void Simulation::createParticles(int n){
     float mass = 1.0f;
     for(int i=0;i<n;i++){
         //random position
-        int x_win = rand() % window_width;
-        int y_win = rand() % window_height;
+        int x_win = rand() % (window_width - 2*(int)r) + (int)r;
+        int y_win = rand() % (window_height - 2*(int)r) + (int)r;
         Particle* p = new Particle(x_win, y_win, 0.0f, 0.0f, r, mass, window, sf::Color::Green);
         se.addParticle(p);
     }
@@ -64,9 +64,6 @@ void Simulation::drawAll(){
 
 
 void Simulation::run(){
-
-    
-
     //main loop
     std::chrono::high_resolution_clock::time_point frameStartTime = std::chrono::high_resolution_clock::now();
     while(gameFlag){

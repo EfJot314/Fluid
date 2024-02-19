@@ -38,10 +38,16 @@ float Particle::getPositionY(){
     return position[1];
 }
 
-void Particle::updateKinematicProperties(float* acceleration){
-    //update velocity
+void Particle::updateKinematicProperties(float* acceleration, int width, int height){
+    //update velocity 
     velocity[0] += acceleration[0] * deltaTime;
-    velocity[1] += acceleration[1] * deltaTime;
+    if(position[1] + r < height || acceleration[1] < 0)
+        velocity[1] += acceleration[1] * deltaTime;
+    //collisions with box
+    if((position[0]-r <= 0 && velocity[0] < 0) || (position[0]+r >= width && velocity[0] > 0))
+        velocity[0] *= -1 * (1 - energyLoss);
+    if((position[1]-r <= 0 && velocity[1] < 0) || (position[1]+r >= height && velocity[1] > 0))
+        velocity[1] *= -1 * (1 - energyLoss); 
     //update position
     position[0] += velocity[0] * deltaTime;
     position[1] += velocity[1] * deltaTime;
