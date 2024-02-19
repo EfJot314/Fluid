@@ -33,9 +33,12 @@ class Particle{
 class SimulationEngine{
     private:
         int nOfParticles;
-        Particle** particles;
+        int nX, nY;
+        std::vector<Particle*> particles;
+        std::vector<std::vector<std::vector<Particle*>>> sectors;
     public:
         SimulationEngine();
+        SimulationEngine(int nx, int ny);
         ~SimulationEngine();
         void moveAll(int width, int height);
         float* getAcceleration(int particleId);
