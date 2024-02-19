@@ -47,7 +47,7 @@ class SimulationEngine{
 
 class Simulation{
     private:
-        SimulationEngine ge;
+        SimulationEngine se;
         int FPS;
         int window_width;
         int window_height;
@@ -58,6 +58,7 @@ class Simulation{
         Simulation();
         Simulation(int width, int height);
         ~Simulation();
+        void createParticles(int n);
         void run();
 };
 

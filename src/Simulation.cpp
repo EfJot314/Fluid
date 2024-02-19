@@ -15,9 +15,32 @@ Simulation::Simulation(int width, int height){
 
     //create window
     window = new sf::RenderWindow(sf::VideoMode(window_width, window_height), "Fluid");
+
+    
+
+    
 };
 
 Simulation::~Simulation(){};
+
+void Simulation::createParticles(int n){
+
+    if(n > MaxNoParticles){
+        perror("Too big requested number of particles to create!\n");
+        exit(1);
+    }
+
+    float r = 5.0f;
+    float mass = 1.0f;
+    for(int i=0;i<n;i++){
+        //random position
+        int x_win = rand() % window_width;
+        int y_win = rand() % window_height;
+        Particle* p = new Particle(x_win, y_win, 0.0f, 0.0f, r, mass, window, sf::Color::Green);
+        se.addParticle(p);
+    }
+
+};
 
 
 void Simulation::drawAll(){
@@ -29,13 +52,13 @@ void Simulation::drawAll(){
     //draw background
     window->draw(background);
 
-    //draw all planets
+    //draw all particles
     int i = 0;
-    Particle* curr = ge.getParticle(i);
+    Particle* curr = se.getParticle(i);
     while(curr != NULL){
         curr->draw();
         i++;
-        curr = ge.getParticle(i);
+        curr = se.getParticle(i);
     }
 
     window->display();
@@ -45,12 +68,7 @@ void Simulation::drawAll(){
 
 void Simulation::run(){
 
-    //create first experimental planets
-    Particle p1(1500.0f, 1000.0f, 0.0f, 0.0f, 250.0f, 100000.0f, window, sf::Color::Yellow);
-    Particle p2(2000.0f, 1000.0f, 0.0f, -15.0f, 100.0f, 10.0f, window, sf::Color::Green);
-
-    ge.addParticle(&p1);
-    ge.addParticle(&p2);
+    
 
     //main loop
     std::chrono::high_resolution_clock::time_point frameStartTime = std::chrono::high_resolution_clock::now();
@@ -64,7 +82,7 @@ void Simulation::run(){
         drawAll();
 
         //moving all objects
-        ge.moveAll();
+        se.moveAll();
         
         //handle events
         sf::Event event;

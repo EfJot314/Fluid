@@ -30,27 +30,10 @@ void SimulationEngine::moveAll(){
 float* SimulationEngine::getAcceleration(int particleId){
     //accelerations
     float ax = 0;
-    float ay = 0;
-    //planet position
+    float ay = g;
+    //particle position
     float xp = particles[particleId]->getPositionX();
     float yp = particles[particleId]->getPositionY();
-    //iterate on planets and add acceleration from each of them
-    for(int i=0;i<nOfParticles;i++){
-        //if it is the same then continue
-        if(i == particleId)
-            continue;
-        //if everything is ok, then add to accelerations
-        float x = particles[i]->getPositionX();
-        float y = particles[i]->getPositionY();
-        float mass = particles[i]->getMass();
-        //R^2
-        float Rsq = (xp-x)*(xp-x) + (yp-y)*(yp-y);
-        //a = G*M/R^2
-        float a = G * mass / Rsq;
-        //apply sin() and cos() to get ax and ay
-        ax += a * (x-xp)/sqrt(Rsq);
-        ay += a * (y-yp)/sqrt(Rsq);
-    }
     //create structure to return
     float* acceleration = (float*)malloc(2*sizeof(float));
     acceleration[0] = ax;
