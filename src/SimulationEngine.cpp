@@ -6,9 +6,11 @@ SimulationEngine::SimulationEngine(){
     this->particles = (Particle**)calloc(MaxNoParticles, sizeof(Particle));
 };
 
+
 SimulationEngine::~SimulationEngine(){};
 
-void SimulationEngine::moveAll(){
+
+void SimulationEngine::moveAll(int width, int height){
     //memory allocation
     float** accelerations = (float**)malloc(nOfParticles*sizeof(float*));
     //get accelerations

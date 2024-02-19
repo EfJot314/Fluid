@@ -15,9 +15,6 @@ Simulation::Simulation(int width, int height){
 
     //create window
     window = new sf::RenderWindow(sf::VideoMode(window_width, window_height), "Fluid");
-
-    
-
     
 };
 
@@ -82,7 +79,7 @@ void Simulation::run(){
         drawAll();
 
         //moving all objects
-        se.moveAll();
+        se.moveAll(window_width, window_height);
         
         //handle events
         sf::Event event;

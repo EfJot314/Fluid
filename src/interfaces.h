@@ -37,7 +37,7 @@ class SimulationEngine{
     public:
         SimulationEngine();
         ~SimulationEngine();
-        void moveAll();
+        void moveAll(int width, int height);
         float* getAcceleration(int particleId);
         void addParticle(Particle* particle);
         Particle* getParticle(int i);
