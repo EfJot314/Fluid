@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <cstdlib>
 #include <math.h>
+#include <cmath>
 #include "constants.h"
 
 
@@ -62,6 +63,7 @@ class Simulation{
         Simulation(int width, int height);
         ~Simulation();
         void createParticles(int n);
+        void createParticlesInCircle(int x, int y, int r, int n);
         void run();
 };
 

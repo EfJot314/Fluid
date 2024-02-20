@@ -15,6 +15,9 @@ Simulation::Simulation(int width, int height){
 
     //create window
     window = new sf::RenderWindow(sf::VideoMode(window_width, window_height), "Fluid");
+
+    //create simulation engine
+    this->se = SimulationEngine(100, 100);
     
 };
 
@@ -36,7 +39,26 @@ void Simulation::createParticles(int n){
         Particle* p = new Particle(x_win, y_win, 0.0f, 0.0f, r, mass, window, sf::Color::Green);
         se.addParticle(p);
     }
+};
 
+
+void Simulation::createParticlesInCircle(int x, int y, int r, int n){
+    int counter = 0;
+    while(counter < n){
+        //polar coordinate system
+        int ri = random() % r;
+        int theta = random() % 360;
+        //convert to Cartesian
+        int xi = x + ri * cos(theta * M_PI / 180);
+        int yi = y + ri * sin(theta * M_PI / 180);
+        //check position
+        if(xi > 0 && xi < window_width && yi > 0 && yi < window_height){
+            Particle* p = new Particle(xi, yi, 0.0f, 0.0f, 5.0f, 1.0f, window, sf::Color::Green);
+            se.addParticle(p);
+            counter++;
+        }
+
+    }
 };
 
 
@@ -82,9 +104,14 @@ void Simulation::run(){
         sf::Event event;
         while (window->pollEvent(event)) {
             //closing window
-            if (event.type == sf::Event::Closed) {
+            if(event.type == sf::Event::Closed) {
                 gameFlag = false;
                 window->close();
+            }
+            //LPM pressed - add particles
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                sf::Vector2i mousePosition = sf::Mouse::getPosition(*window);
+                createParticlesInCircle(mousePosition.x, mousePosition.y, 30, 2);
             }
         }
 
